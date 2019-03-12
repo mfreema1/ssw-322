@@ -42,27 +42,34 @@ import maze.ui.MazeViewer;
 public class SimpleMazeGame
 {
 	/**
-	 * Creates a small maze.
+	 * Creates a small maze if no input file is provided
 	 */
 	public static Maze createMaze()
 	{
-		
         Maze maze = new Maze();
-        Room firstRoom = new Room(0);
-        Room secondRoom = new Room(1);
-        Room thirdRoom = new Room(2);
-        Door d = new Door("d0", firstRoom, secondRoom);
-        maze.addRoom(firstRoom);
-        maze.addRoom(secondRoom);
-        maze.addRoom(thirdRoom);
-        firstRoom.setSide(Direction.North, secondRoom);
-        secondRoom.setSide(Direction.East, thirdRoom);
-        maze.setCurrentRoom(firstRoom);
+        Room first = new Room(0);
+        Room second = new Room(1);
+        Door door = new Door("d0", first, second);
+        //first room to the left
+        first.setSide(Direction.North, new Wall());
+        first.setSide(Direction.East, door);
+        first.setSide(Direction.South, new Wall());
+        first.setSide(Direction.West, new Wall());
+        //second room to the right
+        second.setSide(Direction.North, new Wall());
+        second.setSide(Direction.East, new Wall());
+        second.setSide(Direction.South, new Wall());
+        second.setSide(Direction.West, door);
+        maze.addRoom(first);
+        maze.addRoom(second);
+        maze.addDoor(door);
+        maze.setCurrentRoom(first);
 		return maze;
-		
-
 	}
 
+    /**
+     * Start the file loading process for a maze and pass exceptions over to main to handle
+     */
 	public static Maze loadMaze(final String path) throws ParseException, FileNotFoundException
 	{
         File file = new File(path);

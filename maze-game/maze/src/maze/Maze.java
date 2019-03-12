@@ -27,7 +27,6 @@
  */
 package maze;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -36,8 +35,6 @@ import java.util.Scanner;
 import java.text.ParseException;
 import java.util.StringTokenizer;
 import java.util.ArrayList;
-import java.io.File;
-import java.io.FileNotFoundException;
 
 /**
  *
@@ -47,22 +44,28 @@ import java.io.FileNotFoundException;
  */
 public class Maze implements Iterable<Room>
 {
-    private final Map<Integer, Room> rooms = new HashMap<Integer, Room>();
+    private final Map<Integer, Room> rooms = new HashMap<>();
     private final Map<String, Door> doors = new HashMap<>();
     private Room current;
     
-    //keep track of the number of arguments each tag gets when parsing a file
+    //keep track of which object types we accept in a .maze file as well as how many
+    //arguments each of these types accepts
     private static final Map<String, Integer> argMap = new HashMap<>() {{
-        put("room", 6);
-        put("door", 5);
+        put("room", 5);
+        put("door", 4);
     }};
 	
 	public Maze() {}
 
-    //parse a ".maze" file and construct a maze from it
+    /**
+     * Construct a maze from a ".maze" file
+     */
     public Maze(Scanner scanner) throws ParseException {
         int lineNumber = 0;
-        ArrayList<String[]> contentsOfFile = new ArrayList<>();
+        //We only have two object types, so I didn't pull it out into a map, but if more objects come along,
+        //may want to do that
+        ArrayList<String[]> parsedRooms = new ArrayList<>();
+        ArrayList<String[]> parsedDoors = new ArrayList<>();
         while(scanner.hasNextLine()) {
             String line = scanner.nextLine();
             StringTokenizer lineTokens = new StringTokenizer(line);
@@ -72,80 +75,81 @@ public class Maze implements Iterable<Room>
                 try {
                     String objectType = lineTokens.nextToken();
                     Integer numberOfArguments = argMap.get(objectType);
-                    String[] tokenArr;
                     if(numberOfArguments == null)
                         throw new ParseException("Object type '" + objectType + "' not understood on line: ", lineNumber);
-                    else
-                        tokenArr = gatherUpTokens(objectType, lineTokens, numberOfArguments);
-                    if(lineTokens.hasMoreTokens())
-                        throw new ParseException("Too many tokens found on line: ", lineNumber);
-                    contentsOfFile.add(tokenArr);
+                    if(objectType.equals("room"))
+                        parsedRooms.add(gatherUpTokens(lineTokens, numberOfArguments));
+                    if(objectType.equals("door"))
+                        parsedDoors.add(gatherUpTokens(lineTokens, numberOfArguments));
+                    // if(lineTokens.hasMoreTokens())
+                    //     throw new ParseException("Too many tokens found on line: ", lineNumber);
                 }
                 catch(NoSuchElementException e) {
                     throw new ParseException("Too few tokens found on line: ", lineNumber);
                 }
             }
         }
-        //TODO: We can do much better than this, just a proof of concept now that I understand the problem
-        for(String[] input : contentsOfFile) {
-            if(input[0].equals("room"))
-                initializeRoom(input);
-            else
-                initializeDoor(input);
-        }
-        for(String[] input : contentsOfFile) {
-            if(input[0].equals("room"))
-                fillInRoom(input);
-        }
-        System.out.println(rooms);
-        System.out.println(doors);
+        //TODO: Perhaps we can polymorph this behavior?
+        //firstly, go and start creating the rooms, then make the doors and finish creating the rooms.  We do it as
+        //such because of the dependencies between the two objects.  The rooms may need references to doors, but not when
+        //being constructed.  Doors do need references to rooms at the constructor call, so the current solution is to
+        //partially make the rooms, make the doors, and then go back and fill the rooms in with the doors.
+        for(String[] input : parsedRooms)
+            initializeRoom(input);
+        for(String[] input : parsedDoors)
+            initializeDoor(input);
+        for(String[] input : parsedRooms)
+            fillInRoom(input);
+        setCurrentRoom(0); //set to first room created, this is arbitrary for right now
         scanner.close();
     }
 
-    //make a pass over all of the objects and just initialize all of the room instances
+    /**
+     * Begin the creation of a set of rooms.  The rooms cannot be fully created because we do not yet have
+     * references to the doors that the room may need to reference
+     */
     private void initializeRoom(String[] arr) {
-        if(arr[0].equals("room")) {
-            Room room = new Room(Integer.parseInt(arr[1]));
-            addRoom(room);
-        }
+        Room room = new Room(Integer.parseInt(arr[0]));
+        addRoom(room);
     }
 
-    //now go through all of the doors and link them to the rooms
+    /**
+     * Create a door instance from a line of file input
+     */
     private void initializeDoor(String[] arr) {
-        if(arr[0].equals("door")) {
-            Door d = new Door(arr[1], rooms.get(Integer.parseInt(arr[2])), rooms.get(Integer.parseInt(arr[3])));
-            if(arr[4].equals("open"))
-                d.setOpen(true);
-            addDoor(d);
-        }
+        //note that a door only has 4 arguments
+        Door d = new Door(arr[0], rooms.get(Integer.parseInt(arr[1])), rooms.get(Integer.parseInt(arr[2])));
+        if(arr[3].equals("open"))
+            d.setOpen(true);
+        addDoor(d);
     }
 
-    //finally, fill in the rooms now that we have references to the doors
+    /**
+     * After the rooms and doors have been initialized, finalize the creation of the rooms by setting
+     * their sides
+     */
     private void fillInRoom(String[] arr) {
-        if(arr[0].equals("room")) {
-            Room room = rooms.get(Integer.parseInt(arr[1]));
-            //there's really no good way I can think of to do this with the direction changing
-            //TODO: find a way to get rid of this Directions tidbit and simplify this logic
-            Direction[] directions = new Direction[] { Direction.North, Direction.South, Direction.East, Direction.West };
-            for(int i = 0; i < directions.length; i++) {
-                if(arr[i + 2].equals("wall"))
-                    room.setSide(directions[i], new Wall());
-                //we assume all door ids start with a "d"
-                else if(arr[i + 2].startsWith("d")) {
-                    System.out.println(doors.get(arr[i+2]));
-                    room.setSide(directions[i], doors.get(arr[i + 2]));
-                }
-                else
-                    room.setSide(directions[i], rooms.get(Integer.parseInt(arr[i + 2])));
-            }
+        Room room = rooms.get(Integer.parseInt(arr[0]));
+        Direction[] directions = Direction.values();
+        //the directions begin at index 1 and go to index 4, just lining them up in this loop
+        for(int i = 0; i < directions.length; i++) {
+            String token = arr[i + 1];
+            if(token.equals("wall"))
+                room.setSide(directions[i], new Wall());
+            else if(token.startsWith("d")) //we assume all door ids start with a "d"
+                room.setSide(directions[i], doors.get(token));
+            else
+                room.setSide(directions[i], rooms.get(Integer.parseInt(token)));
         }
     }
 
-    //journey through the tokens and place them into an array
-    private String[] gatherUpTokens(String type, StringTokenizer tokens, int numberOfTokens) {
+    /**
+     * Take a line from a file input and parse it into an array of the arguments on that line.  We do this to
+     * avoid having to iterate over the parsed file multiple times
+     */
+    private String[] gatherUpTokens(StringTokenizer tokens, int numberOfTokens) {
         String[] arr = new String[numberOfTokens];
-        arr[0] = type;
-        for(int i = 1; i < numberOfTokens; i++) {
+        for(int i = 0; i < numberOfTokens; i++) {
             arr[i] = tokens.nextToken();
         }
         return arr;
@@ -156,7 +160,6 @@ public class Maze implements Iterable<Room>
 		rooms.put(r.getNumber(), r);
     }
     
-    //keep track of all of our doors
     public final void addDoor(final Door d) {
         doors.put(d.getId(), d);
     }

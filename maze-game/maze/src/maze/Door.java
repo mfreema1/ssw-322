@@ -43,10 +43,10 @@ public class Door extends MapSite
 
 	public Door(String id, final Room r1, final Room r2)
 	{
+        this.id = id;
 		open = false;
 		rooms[0] = r1;
         rooms[1] = r2;
-        this.id = id;
 	}
 	
 	public final boolean isOpen()
