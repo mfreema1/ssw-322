@@ -12,12 +12,16 @@ public class Main {
             Maze maze;
             MazeGameCreator creator;
             if(args.length > 1) { //a file and a color
-                if(args[1].equals("red"))
-                    creator = new RedMazeGameCreator();
-                else if(args[1].equals("blue"))
-                    creator = new BlueMazeGameCreator();
-                else
-                    throw new ParseException("Color (2nd argument) must be either 'red' or 'blue'", 0);
+                switch(args[1]) {
+                    case "red":
+                        creator = new RedMazeGameCreator();
+                        break;
+                    case "blue":
+                        creator = new BlueMazeGameCreator();
+                        break;
+                    default:
+                        throw new ParseException("Color (2nd argument) must be either 'red' or 'blue'", 0);
+                }
                 maze = creator.makeMaze(args[0]);
             }
             else if(args.length > 0) { //just a file
