@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6553f13d-4aec-41f8-b64a-6b9a12859c82" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/maze/Maze.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/maze/Maze.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/maze/SimpleMazeGame.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../maze-factory-pattern/src/maze/Maze.java" beforeDir="false" afterPath="$PROJECT_DIR$/../maze-factory-pattern/src/maze/Maze.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../maze-factory-pattern/src/maze/SimpleMazeGame.java" beforeDir="false" />
-    </list>
+    <list default="true" id="6553f13d-4aec-41f8-b64a-6b9a12859c82" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +41,7 @@
     <session id="-511251239">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="2" />
           <entry key="project.open.time.5" value="1" />
           <entry key="project.open.time.9" value="1" />
           <entry key="project.opened" value="2" />
@@ -78,11 +73,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/maze/MazeGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="748">
-              <caret line="36" column="38" selection-start-line="36" selection-start-column="38" selection-end-line="36" selection-end-column="38" />
+            <state relative-caret-position="426">
+              <caret line="22" column="42" lean-forward="true" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
             </state>
           </provider>
         </entry>
@@ -132,7 +127,7 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/maze/MazeFactory.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="632">
@@ -209,8 +204,8 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553725384769" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553725623237" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../maze-factory-pattern" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -264,7 +259,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-1" y="0" width="1922" height="1053" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12219851" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -320,6 +314,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/maze/MazeGameAbstractFactory.java" />
+    <entry file="file://$PROJECT_DIR$/src/maze/MazeFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="632">
+          <caret line="124" column="39" selection-start-line="124" selection-start-column="39" selection-end-line="124" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/maze/LightBlueRoom.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="299">
@@ -357,15 +358,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/maze/MazeGame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="748">
-          <caret line="36" column="38" selection-start-line="36" selection-start-column="38" selection-end-line="36" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/maze/MazeFactory.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="632">
-          <caret line="124" column="39" selection-start-line="124" selection-start-column="39" selection-end-line="124" selection-end-column="39" />
+        <state relative-caret-position="426">
+          <caret line="22" column="42" lean-forward="true" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
         </state>
       </provider>
     </entry>
