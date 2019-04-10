@@ -1,2 +1,3 @@
 bin
 maze-ui.jar
+**/*.class
