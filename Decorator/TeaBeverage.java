@@ -1,0 +1,1 @@
+public interface TeaBeverage extends Beverage { }
