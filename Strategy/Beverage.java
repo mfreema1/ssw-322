@@ -2,12 +2,21 @@ public abstract class Beverage {
 
     protected SizeFactor sizeFactor;
 
-    abstract String getDescription();
+    protected abstract String getDescription();
 
-    abstract double getCost();
+    protected abstract double getCost();
 
-    public double getSizeCost() {
-        return sizeFactor.cost();
+    //TODO: find a better way to do this
+    public double getTotalCost() {
+        if(sizeFactor != null)
+            return getCost() + sizeFactor.cost();
+        return getCost();
     }
+
+    public String prepare() {
+        if(sizeFactor != null)
+            return getDescription() + " " + sizeFactor.getSize();
+        return getDescription();
+    };
 
 }

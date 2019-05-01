@@ -12,16 +12,11 @@ public abstract class Ingredient extends Beverage {
     abstract String getDescriptionOfIngredient();
 
     //recursive functions for description and cost
-    public String getDescription() {
-        return drink.getDescription() + " " + getDescriptionOfIngredient();
+    protected String getDescription() {
+        return drink.prepare() + " " + getDescriptionOfIngredient();
     }
 
-    public double getCost() {
+    protected double getCost() {
         return drink.getCost() + getCostOfIngredient();
-    }
-
-    @Override
-    public double getSizeCost() {
-        return drink.getSizeCost();
     }
 }

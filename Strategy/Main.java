@@ -37,7 +37,7 @@ public class Main {
         for(int i = 2; i < args.length; i++) {
             bev = ingredients.get(args[i].toLowerCase()).apply(bev); //apply functional interface
         }
-        System.out.println(bev.getDescription());
-        System.out.println(String.format("%.2f", bev.getCost() + bev.getSizeCost()));
+        System.out.println(bev.prepare());
+        System.out.println(String.format("%.2f", bev.getTotalCost()));
     }
 }

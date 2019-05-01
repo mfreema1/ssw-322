@@ -19,9 +19,13 @@ public abstract class SizeFactor {
         }
     }
 
-    public abstract double getSmall();
+    protected abstract double getSmall();
 
-    public abstract double getMedium();
+    protected abstract double getMedium();
 
-    public abstract double getLarge();
+    protected abstract double getLarge();
+
+    public String getSize() {
+        return "(" + size + ")";
+    }
 }
